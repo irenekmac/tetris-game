@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const grid = document.querySelector('.grid') //in-built JS method that looks into the HTML for the query when the variable is called
   let squares = Array.from(document.querySelectorAll('.grid div')) //collect all div's from grid - giving it a specific index number
   const ScoreDisplay = document.querySelector('#score')
-  const StartBtn = document.querySelector('#start-button')
+  const startBtn = document.querySelector('#start-button')
   const width = 10
 
   //Tetrominoes
@@ -67,12 +67,54 @@ document.addEventListener('DOMContentLoaded', () => {
   // make tetrominoes move down every second
   timerId = setInterval(moveDown, 1000)
 
+  // assign functions to keycodes
+  function control(e) {
+    if(e.keyCode === 37) {
+      moveLeft()
+      } else if (e.keyCode === 38) {
+        // rotate
+      } else if (e.keyCode === 39) {
+        // moveRight()
+      } else if (e.keyCode === 40) {
+      // moveDown()
+
+      }
+    }
+  }
+  document.addEventListener('keyup', control)
+
   //move down function
   function moveDown() {
     undraw()
     currentPosition += width
     draw()
+    freeze()
   }
 
+  // freeze function
+  function freeze() {
+    if(current.some(index => squares[currentPosition + index + width].classList.contains('taken'))) {
+      current.forEach(index => squares[currentPosition + index].classList.add('taken'))
+      // start a new falling tetromino
+      random = Math.floor(Math.random() * theTetrominoes.length)
+      console.log(random)
+      current = theTetrominoes[random][currentRotation]
+      currentPosition = 4
+      draw()
+    }
+  }
+
+  // move the tetromino left, unless it's at the edge or there is a blockage
+  function moveLeft() {
+    undraw()
+    const isAtLeftEdge = current.some(index => (currentPosition + index) % width === 0)
+
+    if(!isAtLeftEdge) currentPosition -=1
+
+    if(current.some(index => squares[currentPosition +index].classList.contains('taken')))
+    currentPosition +=1
+  }
+
+  draw()
 
 })
