@@ -101,11 +101,12 @@ document.addEventListener('DOMContentLoaded', () => {
       // start a new falling tetromino
       random = nextRandom
       nextRandom = Math.floor(Math.random() * theTetrominoes.length)
-      console.log(random)
+      // console.log(random)
       current = theTetrominoes[random][currentRotation]
       currentPosition = 4
       draw()
       displayShape()
+      addScore()
     }
   }
 
@@ -195,9 +196,12 @@ document.addEventListener('DOMContentLoaded', () => {
         scoreDisplay.innerHTML = score
         row.forEach(index => {
           squares[index].classList.remove('taken')
+          sqares[index].classList.remove('tetromino')
         })
         const squaresRemoved = squares.splice(i, width)
-        console.log(squaresRemoved)
+        // console.log(squaresRemoved)
+        squares = squaresRemoved.concat(squares)
+        squares.forEach(cell => grid.appendChild(cell))
       }
     }
   }
